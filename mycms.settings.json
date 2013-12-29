@@ -1,0 +1,8 @@
+mycms = mycms || {};
+
+mycms.SETTINGS =
+{
+"siteName": "mycms",
+"domainName": "http://mycms.dyndns.org/data.json",
+"description": "#1 hier die Beschreibung..."
+}

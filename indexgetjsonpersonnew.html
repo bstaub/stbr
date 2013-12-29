@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+    <!--
+
+    ko.mapping.toJSON(viewModel)
+
+    -->
+
+</head>
+<body>
+
+
+
+<script type='text/javascript' src='knockout-3.0.0.js'></script>
+<script type='text/javascript' src='knockout.mapping-latest.js'></script>
+<script type='text/javascript' src="jquery-1.10.2.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+        var company;
+
+        function PersonViewModel(data) {
+            var personMapping = {
+                'ignore': ['twitter', 'webpage'],
+                'copy': ['age'],
+                'lastName': {
+                    'create': function(options) {
+                        return ko.observable(options.data.toUpperCase());
+                    }
+                }
+            };
+
+            ko.mapping.fromJS(data, personMapping, this);
+
+            this.fullName = ko.computed(function() {
+                return this.firstName() + ' ' + this.lastName();
+            }, this);
+        }
+
+        function CompanyViewModel(data) {
+            var companyMapping = {
+                // 'ignore': ['address', 'website'],
+                //'name': {
+                //    'create': function(options) {
+                //        return ko.observable(options.data.toUpperCase());
+                //    }
+                //},
+                'employees': {
+                    key: function(data) {
+                        return ko.utils.unwrapObservable(data.personId);
+                    },
+                    create: function(options) {
+                        return new PersonViewModel(options.data);
+                    }
+                }
+            };
+
+            ko.mapping.fromJS(data, companyMapping, this);
+        }
+
+
+        $.ajax({
+            url: 'http://mycms.dyndns.org/stbr/data_all.json',
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (result) {
+                //var data = JSON.parse(result);
+
+
+                //viewModel = ko.mapping.fromJS(result);
+                //ko.applyBindings(viewModel, $('#person').get(0));
+                company = new CompanyViewModel(result);
+                ko.applyBindings(company, $('#company').get(0));
+
+
+
+            },
+            error: function (result) {
+                console.log('was ist falsch?')
+                //handle the error, left for brevity
+            }
+        });
+
+
+
+        var obj={
+            firstName:ko.observable('Mein Vorname'),
+            lastName:ko.observable('Mein Nachname'),
+            //friends:ko.observableArray([new Friend(new Frnd())])
+        };
+        //obj.addFriend=function(){
+        //    obj.friends.push(new Friend(new Frnd()));
+        //}
+
+        obj.fullName=ko.computed(function(){
+            return obj.firstName()+' '+obj.lastName();
+        });
+        obj.firstName.subscribe(function(val){
+            console.log('Jemand hat den Vornamen gewechselt');
+            console.log(val);
+        })
+        ko.applyBindings(obj);
+
+
+
+    });
+
+
+
+</script>
+
+<p>Vorname: <input data-bind="value:firstName,valueUpdate:'keyup'"/></p>
+<p>Vorname: <span data-bind="text:firstName"></span></p>
+<p>Nachname: <input data-bind="value:lastName,valueUpdate:'keyup'"/></p>
+<p>Nachname: <span data-bind="text:lastName"></span></p>
+<p>Namen: <span data-bind="text:fullName"></span></p>
+
+
+
+<div id="company">
+    Data will show within 2 seconds (ajax delay is set to 2)
+    <h1 data-bind="text: name"></h1>
+    <h2>Employees</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Full name</th>
+            <th>Last name</th>
+            <th>First name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: employees">
+        <tr>
+            <td data-bind="text: fullName"></td>
+            <td data-bind="text: lastName"></td>
+            <td data-bind="text: firstName"></td>
+            <td data-bind="text: age"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+<!--
+<ul data-bind="foreach:friends">
+    <li><span data-bind="text:name"></span></li>
+    <input type="checkbox" data-bind="checked:knowJS"/>
+    <input data-bind="value:favLib, visible:knowJS" />
+    <button data-bind="click:removeFriend">X</button>
+</ul>
+
+
+<button data-bind="click:addFriend, enable:friends().length<5">ADD Friend</button>
+-->
+
+<button>Send an HTTP GET request to a page and get the result back</button>
+
+<br />
+link: <a href="http://mycms.dyndns.org/stbr/indexgetjsonpersonnew.html">load version from webserver!</a>
+</body>
+</html>

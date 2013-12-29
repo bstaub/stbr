@@ -1,0 +1,3 @@
+{ "personId": 1, "firstName": "Bruno", "lastName": "Staub", "age": 40, "webpage": "http://www.intersolution.ch", "twitter": "@kornfilter" }
+{ "personId": 2, "firstName": "Nadine", "lastName": "Jordi", "age": 32, "webpage": "http://najo.stbr.ch", "twitter": "@najo" }
+{ "personId": 3, "firstName": "Hans", "lastName": "Staub", "age": 74, "webpage": "http://www.staubnet.ch", "twitter": "@hrstaub" }

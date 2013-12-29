@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+<!--
+    jQuery.get( url [, data ] [, success(data, textStatus, jqXHR) ] [, dataType ] )
+
+    function is equals to:
+
+    $.ajax({
+    url: url,
+    data: data,
+    success: success,
+    dataType: dataType
+    });
+
+   http://www.tutorialspoint.com/json/json_ajax_example.htm
+
+   http://api.jquery.com/jquery.ajax/
+
+   http://stackoverflow.com/questions/19155192/jquery-ajax-call-to-php-script-with-json-return
+
+   var mydata = {"Vorname": "Bruno", "nachname": "Staub" };
+   console.log(mydata);
+
+   var mydata2 = { "personId": 1, "firstName": "Bruno", "lastName": "Staub", "age": 40, "webpage": "http://www.intersolution.ch", "@twitter": "kornfilter" };
+   console.log(mydata2);
+
+   JSON Result from firebug:
+   {"status":"success","message":"success message"}
+
+   try to send content type header from server use this just before echoing
+   header('Content-Type: application/json');
+
+   I recommend you use:
+   var returnedData = JSON.parse(data);
+   to convert the JSON string (if it is just text) to a JavaScript object.
+
+   JSON with JSONP Accross Domain
+   http://stackoverflow.com/questions/8797169/jquery-ajax-issue
+   // Notice! JSONP <-- P (lowercase)
+
+   http://jsonformat.com
+
+   http://www.jquery4u.com/json/jsonp-examples/
+-->
+
+
+
+
+
+</head>
+<body>
+
+
+
+<script type='text/javascript' src='knockout-3.0.0.js'></script>
+<script type='text/javascript' src='knockout.mapping-latest.js'></script>
+<script type='text/javascript' src="jquery-1.10.2.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.ajax({
+                url: 'http://mycms.dyndns.org/stbr/data.json',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (result) {
+                    var data = JSON.parse(result);
+                    viewModel = ko.mapping.fromJS(data);
+                    ko.applyBindings(viewModel, $('#person').get(0));
+                },
+                error: function (result) {
+                    console.log('was ist falsch?')
+                    //handle the error, left for brevity
+                }
+            });
+        });
+    });
+</script>
+
+<button>Send an HTTP GET request to a page and get the result back</button>
+
+</body>
+</html>

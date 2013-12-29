@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Knockout JS Howto</title>
+
+    <!-- http://knockoutjs.com/ -->
+
+</head>
+<body>
+<p>Vorname: <input data-bind="value:firstName,valueUpdate:'keyup'"/></p>
+<p>Vorname: <span data-bind="text:firstName"></span></p>
+<p>Nachname: <input data-bind="value:lastName,valueUpdate:'keyup'"/></p>
+<p>Nachname: <span data-bind="text:lastName"></span></p>
+<p>Namen: <span data-bind="text:fullName"></span></p>
+<ul data-bind="foreach:friends">
+    <li><span data-bind="text:name"></span></li>
+    <input type="checkbox" data-bind="checked:knowJS"/>
+    <input data-bind="value:favLib, visible:knowJS" />
+    <button data-bind="click:removeFriend">X</button>
+</ul>
+
+<button data-bind="click:addFriend, enable:friends().length<5">ADD Friend</button>
+
+<script type='text/javascript' src='knockout-3.0.0.js'></script>
+<script>
+    function Friend(name){
+        this.name=name;
+        this.knowJS=ko.observable(false);
+        this.favLib=ko.observable('');
+        this.removeFriend=function(){
+            obj.friends.remove(this);
+        }
+    }
+
+    var obj={
+        firstName:ko.observable('Mein Vorname'),
+        lastName:ko.observable('Mein Nachname'),
+        friends:ko.observableArray([new Friend('Franco'),new Friend('Dominik'),new Friend('Tim')])
+    };
+    obj.addFriend=function(){
+        obj.friends.push(new Friend('new'));
+    }
+
+    obj.fullName=ko.computed(function(){
+        return obj.firstName()+' '+obj.lastName();
+    });
+    obj.firstName.subscribe(function(val){
+        console.log('Jemand hat den Vornamen gewechselt');
+        console.log(val);
+    })
+    ko.applyBindings(obj);
+
+</script>
+
+</body>
+</html>

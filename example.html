@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+
+<script>
+
+    var company;
+
+    function PersonViewModel(data) {
+        var personMapping = {
+            'ignore': ['twitter', 'webpage'],
+            'copy': ['age'],
+            'lastName': {
+                'create': function(options) {
+                    return ko.observable(options.data.toUpperCase());
+                }
+            }
+        };
+
+        ko.mapping.fromJS(data, personMapping, this);
+
+        this.fullName = ko.computed(function() {
+            return this.firstName() + ' ' + this.lastName();
+        }, this);
+    }
+
+    function CompanyViewModel(data) {
+        var companyMapping = {
+            'ignore': ['address', 'website'],
+            'name': {
+                'create': function(options) {
+                    return ko.observable(options.data.toUpperCase());
+                }
+            },
+            'employees': {
+                key: function(data) {
+                    return ko.utils.unwrapObservable(data.personId);
+                },
+                create: function(options) {
+                    return new PersonViewModel(options.data);
+                }
+            }
+        };
+
+        ko.mapping.fromJS(data, companyMapping, this);
+    }
+
+    $.ajax({
+        url: '/echo/json/',
+        type: 'POST',
+        data: {
+            json: JSON.stringify({
+                name: 'Atos',
+                website: 'http://atos.net',
+                address: {
+                    street: 'River Ouest 80, Quai Voltaire',
+                    zipCode: '95877',
+                    city: 'Bezons, Paris'
+                },
+                employees: [{
+                    personId: 1223,
+                    firstName: 'Marco',
+                    lastName: 'Franssen',
+                    age: 26,
+                    webpage: 'http://marcofranssen.nl',
+                    twitter: '@marcofranssen'},
+                    {
+                        personId: 1,
+                        firstName: 'Thierry',
+                        lastName: 'Breton',
+                        age: null,
+                        webpage: '',
+                        twitter: ''},
+                    {
+                        personId: 1233213,
+                        firstName: 'John',
+                        lastName: 'Doe',
+                        age: 33,
+                        webpage: 'http://john.doe',
+                        twitter: '@johndoe'}]
+            }),
+            delay: 2
+        },
+        success: function(response) {
+            company = new CompanyViewModel(response);
+            ko.applyBindings(company, $('#company').get(0));
+        },
+        error: function(response) {
+            alert('something went wrong: ' + response);
+        }
+    });
+
+
+
+
+</script>
+
+</body>
+</html>

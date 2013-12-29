@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+
+</head>
+<body>
+
+
+
+<script type='text/javascript' src='knockout-3.0.0.js'></script>
+<script type='text/javascript' src='knockout.mapping-latest.js'></script>
+<script type='text/javascript' src="jquery-1.10.2.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.ajax({
+                url: 'http://mycms.dyndns.org/stbr/data_person.json',
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (result) {
+                    //var data = JSON.parse(result);
+
+
+                    viewModel = ko.mapping.fromJS(result);
+                    ko.applyBindings(viewModel, $('#person').get(0));
+                },
+                error: function (result) {
+                    console.log('was ist falsch?')
+                    //handle the error, left for brevity
+                }
+            });
+        });
+    });
+</script>
+
+<button>Send an HTTP GET request to a page and get the result back</button>
+
+<br />
+link: <a href="http://mycms.dyndns.org/stbr/indexgetjsonperson.html">load version from webserver!</a>
+</body>
+</html>

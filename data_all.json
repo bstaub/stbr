@@ -1,0 +1,21 @@
+employees: [{
+    personId: 1,
+    firstName: "Bruno",
+    lastName: "Staub",
+    age: 40,
+    webpage: "http://www.intersolution.ch",
+    twitter: "@kornfilter"},
+{
+    personId: 2,
+    firstName: "Nadine",
+    lastName: "Jordi",
+    age: null,
+    webpage: "http://najo.stbr.ch",
+    twitter: "@najo"},
+{
+    personId: 3,
+    firstName: "Hans",
+    lastName: "Muster",
+    age: 10,
+    webpage: "http://www.typo3.org",
+    twitter: "@typo3"}]

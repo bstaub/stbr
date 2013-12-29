@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>how-can-i-get-the-id-of-an-element-using-jquery</title>
+
+    <!--
+    http://stackoverflow.com/questions/3239598/how-can-i-get-the-id-of-an-element-using-jquery
+
+
+    $(document).ready(function() {
+        alert($('#test').attr('id'));
+    });
+
+    -->
+
+</head>
+<body>
+
+
+
+<script type='text/javascript' src='knockout-3.0.0.js'></script>
+<script type='text/javascript' src='knockout.mapping-latest.js'></script>
+<script type='text/javascript' src="jquery-1.10.2.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("button").click(function(){
+
+            console.log($("#mytest").attr("id"));
+            console.log($('#mytest').get(0).id);
+            console.log($('#mytest').get(0));
+            console.log($('#mytest').attr('name'));
+            console.log($('#mytest').get(0).name);
+            console.log($("#mytest"));
+        });
+    });
+
+
+</script>
+
+<div id="mytest" name="was">how-can-i-get-the-id-of-an-element-using-jquery</div>
+<button>show jury attar / dom get with console</button>
+
+</body>
+</html>
